@@ -106,9 +106,6 @@ class Game extends React.Component {
           arr.push(coord);
           break;
       }
-
-      console.log(arr);
-      console.log(squares);
       if (calculateWinner(squares) || squares[i]) {
         return;
       }
@@ -129,6 +126,12 @@ class Game extends React.Component {
   }
 
   jumpTo(step) {
+    var doms = document.getElementsByTagName("button");
+    if (!step) {
+      for (let i = 0; i < 9; i++) {
+        doms[i].style.color = "black";
+      }
+    }
     this.setState({
       stepNumber: step,
       xIsNext: step % 2 === 0,
@@ -139,15 +142,17 @@ class Game extends React.Component {
     window.location.href = "https://www.baidu.com/";
   }
 
+  componentDidMount() {
+    var doms = document.getElementsByTagName("button");
+  }
+
   render() {
     let coord = 1;
     const history = this.state.history;
     const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
     const arr = this.state.arr.slice();
-    console.log(arr);
     const moves = history.map((step, move) => {
-      console.log(move);
       const desc = move
         ? "Go to move #" + move + "  coord:" + arr[move - 1]
         : "Go  to game start";
@@ -159,9 +164,9 @@ class Game extends React.Component {
     });
 
     let status;
+    let doms = document.getElementsByTagName("button");
     if (winner) {
       status = "Winner: " + current.squares[winner[1]];
-      var doms = document.getElementsByTagName("button");
       for (const i of winner) {
         doms[i].style.color = "red";
       }
