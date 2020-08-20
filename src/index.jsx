@@ -17,6 +17,8 @@ class Board extends Component {
       <Square
         value={this.props.squares[i]}
         onClick={() => this.props.onClick(i)}
+        coord={this.props.coord}
+        text={i}
       />
     );
   }
@@ -51,16 +53,9 @@ class Game extends React.Component {
         squares: Array(9).fill(null)
       }],
       xIsNext: true,
-      stepNumber: 0
+      stepNumber: 0,
+      arr:[]
     };
-  }
-
-  componentDidMount(){
-    console.log("111");
-  }
-
-  componentWillUnmount(){
-    console.log("222");
   }
 
   handleClick(i) {
@@ -68,6 +63,41 @@ class Game extends React.Component {
     const current = history[history.length - 1];
     // 建立一个副本
     const squares = current.squares.slice();
+    let arr = this.state.arr.slice();
+    let coord;
+    
+    
+    switch (i) {
+      case 0:coord=[0,0];
+      arr.push(coord);
+      break;
+      case 1:coord=[0,1];
+      arr.push(coord);
+      break;
+      case 2:coord=[0,2];
+      arr.push(coord);
+      break;
+      case 3:coord=[1,0];
+      arr.push(coord);
+      break;
+      case 4:coord=[1,1];
+      arr.push(coord);
+      break;
+      case 5:coord=[1,2];
+      arr.push(coord);
+      break;
+      case 6:coord=[2,0];
+      arr.push(coord);
+      break;
+      case 7:coord=[2,1];
+      arr.push(coord);
+      break;  
+      case 8:coord=[2,2];
+      arr.push(coord);
+      break;  
+    }
+
+    console.log(arr);
     if (calculateWinner(squares) || squares[i]) {
       return;
     }
@@ -77,8 +107,9 @@ class Game extends React.Component {
         squares: squares
       }]),
       xIsNext: !this.state.xIsNext,
-      stepNumber:history.length
-    });
+      stepNumber:history.length,
+      arr:arr
+    })
   }
 
   jumpTo(step){
@@ -97,8 +128,11 @@ class Game extends React.Component {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
+    const arr = this.state.arr.slice();
+    console.log(arr);
     const moves = history.map((step,move)=>{
-      const desc = move ? "Go to move #" + move + "  coord:" +  coord : "Go  to game start";
+      console.log(move);
+      const desc = move ? "Go to move #" + move + "  coord:" +  arr[move-1] : "Go  to game start";
       return (
         <li key={move}>
           <button onClick={()=>this.jumpTo(move)}>{desc}</button>
