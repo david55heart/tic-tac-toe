@@ -61,8 +61,11 @@ class Game extends React.Component {
   }
 
   handleClick(i) {
+    console.log(this.state.stepNumber);
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
+    console.log(history);
     const current = history[history.length - 1];
+    console.log(current);
     // 建立一个副本
     const squares = current.squares.slice();
     let arr = this.state.arr.slice();
@@ -150,6 +153,7 @@ class Game extends React.Component {
     let coord = 1;
     const history = this.state.history;
     const current = history[this.state.stepNumber];
+    console.log(current);
     const winner = calculateWinner(current.squares);
     const arr = this.state.arr.slice();
     const moves = history.map((step, move) => {
@@ -171,7 +175,11 @@ class Game extends React.Component {
         doms[i].style.color = "red";
       }
     } else {
-      status = `Next player:  ${this.state.xIsNext ? "X" : "O"} `;
+	  if(current.squares.indexOf(null) == -1){
+		  status = `a dead heat`
+	  }else{
+		  status = `Next player:  ${this.state.xIsNext ? "X" : "O"} `;
+	  }
     }
 
     return (
